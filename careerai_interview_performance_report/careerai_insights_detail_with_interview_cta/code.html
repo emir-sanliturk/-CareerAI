@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Job Analysis Panel - CareerAI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script defer="" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "on-background": "#191c1e",
+                        "surface-tint": "#545f73",
+                        "on-primary-container": "#8590a6",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-secondary-fixed": "#002113",
+                        "primary-fixed": "#d8e3fb",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface": "#f7f9fb",
+                        "primary-fixed-dim": "#bcc7de",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "inverse-on-surface": "#eff1f3",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#4edea3",
+                        "surface-variant": "#e0e3e5",
+                        "on-primary-fixed": "#111c2d",
+                        "on-tertiary-container": "#c88000",
+                        "surface-dim": "#d8dadc",
+                        "on-surface-variant": "#45474c",
+                        "surface-container-high": "#e6e8ea",
+                        "primary": "#091426",
+                        "surface-container-low": "#f2f4f6",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "on-primary-fixed-variant": "#3c475a",
+                        "secondary-container": "#6cf8bb",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-surface": "#191c1e",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "inverse-primary": "#bcc7de",
+                        "on-secondary-container": "#00714d",
+                        "on-error-container": "#93000a",
+                        "secondary": "#006c49",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#201100",
+                        "tertiary-container": "#3c2300",
+                        "background": "#f7f9fb",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c5c6cd",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#6ffbbe",
+                        "primary-container": "#1e293b",
+                        "outline": "#75777d",
+                        "surface-container": "#eceef0",
+                        "success-emerald": "#10b981",
+                        "warning-amber": "#f59e0b",
+                        "info-blue": "#3b82f6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "stack-lg": "32px",
+                        "margin-desktop": "40px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.25", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .match-gauge {
+            width: 160px;
+            height: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        .match-gauge::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 12px solid var(--tw-colors-surface-container-high);
+            box-sizing: border-box;
+        }
+        .match-gauge::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 12px solid transparent;
+            border-top-color: var(--tw-colors-success-emerald);
+            border-right-color: var(--tw-colors-success-emerald);
+            box-sizing: border-box;
+            transform: rotate(45deg); /* 84% roughly translates to ~135deg from -45, this is simplified css visual */
+            transition: transform 1s ease-out;
+        }
+        
+        .progress-bar {
+            transition: width 1s ease-out;
+        }
+
+        /* Minimalist scrollbar for the cover letter pane */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: var(--tw-colors-surface-container-low);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--tw-colors-outline-variant);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: var(--tw-colors-outline);
+        }
+        
+        .toast-enter {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .toast-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.3s ease-out;
+        }
+        .toast-leave {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .toast-leave-active {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease-in;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex selection:bg-primary-fixed selection:text-on-primary-fixed" x-data="analysisApp()">
+<!-- Toast Notification -->
+<div class="fixed bottom-4 right-4 z-50 flex flex-col gap-2" style="display: none;" x-show="toasts.length &gt; 0">
+<template :key="toast.id" x-for="toast in toasts">
+<div class="bg-primary text-on-primary px-4 py-3 rounded-lg shadow-lg flex items-center gap-3" x-transition:enter="toast-enter-active" x-transition:enter-start="toast-enter" x-transition:leave="toast-leave-active" x-transition:leave-end="toast-leave">
+<span class="material-symbols-outlined" x-text="toast.icon"></span>
+<span class="font-body-md text-body-md" x-text="toast.message"></span>
+</div>
+</template>
+</div>
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col py-stack-lg px-stack-md z-40 border-r border-outline-variant bg-surface dark:bg-primary hidden md:flex">
+<div class="flex items-center gap-3 mb-stack-lg">
+<img alt="CareerAI Logo" class="w-8 h-8 object-contain" data-alt="A minimalist logo for a career AI tool, featuring a sleek, geometric design in deep corporate blue and pure white, evoking intelligence, precision, and modern professional advancement in a bright, clean light-mode setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQx680MDU9AzhLQPPoxz0AxqF1JR4_0uvzD5hHrN04yWpqnXGnTqTUJrFPc-joGCzcjCh003v8LXaUKOIGCqGLcCQPGAnvq7M8ch6c72nVwNi9Li7GAk1-VozJfQ1GQrydcjQzGSMRNwBTDFDfagJ2yArLqzgHak5Z2N13QpEqbKhppCt_7pi_GcNFLPO4aBRPO2-1guQQbX6IIJ7Wj_nsa-LUDgNhBHfh2xx2AMQmj70FW0ueu6w"/>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">CareerAI</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Pro Edition</p>
+</div>
+</div>
+<nav class="flex-1 space-y-unit">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-on-primary-fixed-variant transition-all font-label-md text-label-md rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary-container text-on-primary-container dark:bg-primary-fixed-dim dark:text-on-primary-fixed rounded-lg transition-transform duration-200 translate-x-1 font-label-md text-label-md shadow-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">description</span>
+                Applications
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-on-primary-fixed-variant transition-all font-label-md text-label-md rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">military_tech</span>
+                My Skills
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-on-primary-fixed-variant transition-all font-label-md text-label-md rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">psychology</span>
+                AI Tools
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-on-primary-fixed-variant transition-all font-label-md text-label-md rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="mt-auto space-y-stack-md">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-2 rounded-lg hover:opacity-90 transition-opacity">Upgrade to Pro</button>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-on-primary-fixed-variant transition-all font-label-md text-label-md rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">help</span>
+                Help Center
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-0 md:ml-64 bg-background min-h-screen relative">
+<!-- Page Loading Overlay -->
+<div class="absolute inset-0 bg-background/80 flex flex-col items-center justify-center z-50 backdrop-blur-sm" style="display: none;" x-show="initialLoading" x-transition="">
+<span class="material-symbols-outlined text-primary text-5xl spin mb-4">sync</span>
+<p class="font-headline-md text-primary">Loading Analysis Data...</p>
+</div>
+<!-- Header -->
+<header class="border-b border-outline-variant bg-surface-container-lowest px-margin-mobile md:px-margin-desktop py-stack-md sticky top-0 z-30">
+<div class="max-w-[1440px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-stack-md">
+<img alt="Company Logo" class="w-12 h-12 rounded-lg border border-outline-variant object-cover" data-alt="A generic, professional tech company logo placeholder. It features a simple, bold letter G in deep primary blue against a pristine white background. The aesthetic is clean, modern, corporate, and minimalist, designed for a bright light-mode interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1fvwz9yp_FbpvFZLSiunzJaAnFzCE01oPmx_ySZjKNOsUVQHX-CpwjmulJwkcMNBU8GqIEkmSLuVgLvs8c5TVMzmBFLynuLK-XYtdrcV5qthLaTGPM7KlQNcKD7SGiJXsN90ATVnYxA7F0kg4_LUV8BZl5Ud7JkvmyaNvQfpeLRz176pAtUBWjYxNxEEfXOiAy8iDdowS3dv2mK0itrA8mPimdxnUtgFK5wZJkDbiQCcqe5EA4KA"/>
+<div>
+<h2 class="font-headline-md text-headline-md md:font-headline-lg md:text-headline-lg text-primary tracking-tight">Senior Frontend Engineer</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Google • Mountain View, CA (Hybrid)</p><div class="flex gap-2 mt-2"><span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[11px] font-medium uppercase tracking-wider">Senior Level</span><span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[11px] font-medium uppercase tracking-wider">Hybrid Model</span><span class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded text-[11px] font-medium uppercase tracking-wider">Target Sector: Fintech</span></div>
+</div>
+</div>
+<div class="hidden md:flex gap-unit">
+<button :disabled="isEditing" @click="handleEditCV" class="border border-primary text-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+<span class="material-symbols-outlined spin text-[18px]" style="display: none;" x-show="isEditing">sync</span>
+<span class="" x-text="isEditing ? 'Opening...' : 'Edit CV'"></span>
+</button>
+<button :disabled="isApplying" @click="handleApplyNow" class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+<span class="material-symbols-outlined spin text-[18px]" style="display: none;" x-show="isApplying">sync</span>
+<span class="" x-text="isApplying ? 'Processing...' : 'Apply Now'"></span>
+</button>
+</div>
+</div>
+</header>
+<!-- Content Grid -->
+<div class="max-w-[1440px] mx-auto p-margin-mobile md:p-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Main Analysis (7 cols) -->
+<div class="lg:col-span-7 space-y-stack-lg">
+<!-- Match Score Card -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md border border-outline-variant shadow-[0px_4px_20px_rgba(30,41,59,0.05)] flex flex-col items-center justify-center text-center">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-stack-md">Job Match Score</h3>
+<div :style="`--tw-colors-success-emerald: ${score &gt;= 80 ? '#10b981' : score &gt;= 60 ? '#f59e0b' : '#ba1a1a'}`" class="match-gauge mb-4 relative" style="--tw-colors-success-emerald: #10b981;" x-init="setTimeout(() =&gt; { $el.style.setProperty('--tw-colors-success-emerald', '#10b981'); }, 100)">
+<div class="absolute inset-0 flex items-end justify-center pb-2">
+<span class="font-display-lg text-display-lg text-primary"><span class="" x-text="score"></span><span class="text-headline-md">%</span></span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md" x-text="scoreMessage"></p>
+</div>
+<!-- Semantic Gap Analysis -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md border border-outline-variant shadow-[0px_4px_20px_rgba(30,41,59,0.05)]">
+<div class="flex items-center justify-between mb-stack-md">
+<h3 class="font-headline-md text-headline-md text-primary">Industry-Tailored Gap Analysis</h3>
+<span class="bg-primary/5 border border-primary/20 text-primary px-2.5 py-1 rounded-full text-[11px] font-semibold flex items-center gap-1 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px]">psychology</span> Verified by Gemini AI | Context: Advanced Strategy</span>
+</div><p class="text-label-sm text-on-surface-variant mb-4 italic">Skills and feedback optimized for the Fintech sector requirements.</p><div class="mb-stack-md border-t border-outline-variant pt-4"><h4 class="font-label-md text-label-md text-on-surface-variant mb-3 flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">target</span> Targeted Values</h4><div class="flex flex-wrap items-center gap-2"><span class="bg-primary/5 text-primary px-3 py-1 rounded-lg text-[11px] font-bold uppercase">Innovation</span><span class="bg-primary/5 text-primary px-3 py-1 rounded-lg text-[11px] font-bold uppercase">Scalability</span><span class="bg-primary/5 text-primary px-3 py-1 rounded-lg text-[11px] font-bold uppercase">Ownership</span><div class="ml-2 flex items-center gap-1.5 text-label-sm text-on-surface-variant italic"><span class="material-symbols-outlined text-[16px] text-primary">auto_awesome</span><span class="">These values weighted the Gemini 'Advanced Strategy' analysis. AI verified high alignment with 'Ownership' based on TechCorp leadership role.</span></div></div></div>
+<div class="mb-stack-md">
+<h4 class="font-label-md text-label-md text-on-surface-variant mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-warning-amber text-sm" style="font-variation-settings: 'FILL' 1;">warning</span>
+                                Critical Skills
+                            </h4>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<template :key="skill.name" x-for="skill in criticalSkills">
+<div @mouseenter="tooltip = true" @mouseleave="tooltip = false" class="group relative border border-error-container bg-error-container/10 p-3 rounded-lg hover:border-error transition-colors cursor-pointer flex justify-between items-center" x-data="{ tooltip: false }">
+<span class="font-label-md text-label-md text-on-surface" x-text="skill.name"></span>
+<button @click.stop="triggerAction(`Added ${skill.name} to CV`, 'add_task')" class="opacity-0 group-hover:opacity-100 bg-surface-container-lowest border border-outline-variant text-label-sm font-label-sm px-2 py-1 rounded transition-opacity hover:bg-surface-container-low">Add to Resume</button>
+<!-- Tooltip -->
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-inverse-surface text-inverse-on-surface text-label-sm p-2 rounded z-10 text-center pointer-events-none" x-cloak="" x-show="tooltip" x-transition.opacity="">
+                                            Highly requested in similar roles. Consider adding projects related to this.
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-inverse-surface"></div>
+</div>
+</div>
+</template><div @mouseenter="tooltip = true" @mouseleave="tooltip = false" class="group relative border border-error-container bg-error-container/10 p-3 rounded-lg hover:border-error transition-colors cursor-pointer flex justify-between items-center" x-data="{ tooltip: false }">
+<span class="font-label-md text-label-md text-on-surface" x-text="skill.name"></span>
+<button @click.stop="triggerAction(`Added ${skill.name} to CV`, 'add_task')" class="opacity-0 group-hover:opacity-100 bg-surface-container-lowest border border-outline-variant text-label-sm font-label-sm px-2 py-1 rounded transition-opacity hover:bg-surface-container-low">Add to Resume</button>
+<!-- Tooltip -->
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-inverse-surface text-inverse-on-surface text-label-sm p-2 rounded z-10 text-center pointer-events-none" style="display: none;" x-show="tooltip" x-transition.opacity="">
+                                            Highly requested in similar roles. Consider adding projects related to this.
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-inverse-surface"></div>
+</div>
+</div><div @mouseenter="tooltip = true" @mouseleave="tooltip = false" class="group relative border border-error-container bg-error-container/10 p-3 rounded-lg hover:border-error transition-colors cursor-pointer flex justify-between items-center" x-data="{ tooltip: false }">
+<span class="font-label-md text-label-md text-on-surface" x-text="skill.name"></span>
+<button @click.stop="triggerAction(`Added ${skill.name} to CV`, 'add_task')" class="opacity-0 group-hover:opacity-100 bg-surface-container-lowest border border-outline-variant text-label-sm font-label-sm px-2 py-1 rounded transition-opacity hover:bg-surface-container-low">Add to Resume</button>
+<!-- Tooltip -->
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-inverse-surface text-inverse-on-surface text-label-sm p-2 rounded z-10 text-center pointer-events-none" style="display: none;" x-show="tooltip" x-transition.opacity="">
+                                            Highly requested in similar roles. Consider adding projects related to this.
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-inverse-surface"></div>
+</div>
+</div>
+<div class="text-on-surface-variant font-body-md text-body-md italic p-3" style="display: none;" x-show="criticalSkills.length === 0">No missing skills detected.</div>
+</div>
+</div>
+<div class="mb-stack-md">
+<h4 class="font-label-md text-label-md text-on-surface-variant mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-info-blue text-sm" style="font-variation-settings: 'FILL' 1;">info</span>
+                                Recommended Skills
+                            </h4>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<template :key="skill.name" x-for="skill in recommendedSkills">
+<div class="border border-outline-variant bg-surface-container-low p-3 rounded-lg flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface" x-text="skill.name"></span>
+<button @click.stop="triggerAction(`Added ${skill.name} to CV`, 'add_task')" class="text-primary hover:bg-surface-container-highest p-1 rounded transition-colors">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</template><div class="border border-outline-variant bg-surface-container-low p-3 rounded-lg flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface" x-text="skill.name"></span>
+<button @click.stop="triggerAction(`Added ${skill.name} to CV`, 'add_task')" class="text-primary hover:bg-surface-container-highest p-1 rounded transition-colors">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div><div class="border border-outline-variant bg-surface-container-low p-3 rounded-lg flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface" x-text="skill.name"></span>
+<button @click.stop="triggerAction(`Added ${skill.name} to CV`, 'add_task')" class="text-primary hover:bg-surface-container-highest p-1 rounded transition-colors">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-success-emerald text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                Matched Skills
+                            </h4>
+<div class="flex flex-wrap gap-2">
+<template :key="skill" x-for="skill in matchedSkills">
+<span class="inline-flex items-center gap-1 bg-success-emerald/10 text-on-secondary-container px-3 py-1.5 rounded-full font-label-sm text-label-sm">
+<span x-text="skill"></span>
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+</template><span class="inline-flex items-center gap-1 bg-success-emerald/10 text-on-secondary-container px-3 py-1.5 rounded-full font-label-sm text-label-sm">
+<span class="" x-text="skill"></span>
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span><span class="inline-flex items-center gap-1 bg-success-emerald/10 text-on-secondary-container px-3 py-1.5 rounded-full font-label-sm text-label-sm">
+<span class="" x-text="skill"></span>
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span><span class="inline-flex items-center gap-1 bg-success-emerald/10 text-on-secondary-container px-3 py-1.5 rounded-full font-label-sm text-label-sm">
+<span class="" x-text="skill"></span>
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span><span class="inline-flex items-center gap-1 bg-success-emerald/10 text-on-secondary-container px-3 py-1.5 rounded-full font-label-sm text-label-sm">
+<span class="" x-text="skill"></span>
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+</div>
+</div>
+</div>
+<!-- ATS Compatibility -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md border border-outline-variant shadow-[0px_4px_20px_rgba(30,41,59,0.05)]" x-data="{ mounted: false }" x-init="setTimeout(() =&gt; mounted = true, 100)">
+<h3 class="font-headline-md text-headline-md text-primary mb-stack-md">ATS Compatibility</h3>
+<div class="space-y-4">
+<template :key="metric.label" x-for="metric in atsMetrics">
+<div>
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-3">
+<span :class="metric.score === 100 ? 'text-success-emerald' : 'text-warning-amber'" class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;" x-text="metric.score === 100 ? 'check_circle' : 'error'"></span>
+<span class="font-body-md text-body-md" x-text="metric.label"></span>
+</div>
+<span :class="metric.score === 100 ? 'text-on-surface-variant bg-surface-container-low' : 'text-warning-amber bg-tertiary-fixed'" class="font-label-sm text-label-sm px-2 py-1 rounded" x-text="metric.score === 100 ? 'Passed' : 'Requires Attention'"></span>
+</div>
+<div class="w-full bg-surface-container-low h-[6px] rounded-full overflow-hidden">
+<div :class="metric.score === 100 ? 'bg-success-emerald' : 'bg-warning-amber'" :style="`width: ${mounted ? metric.score : 0}%`" class="h-full progress-bar"></div>
+</div>
+</div>
+</template><div>
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-3">
+<span :class="metric.score === 100 ? 'text-success-emerald' : 'text-warning-amber'" class="material-symbols-outlined text-success-emerald" style="font-variation-settings: 'FILL' 1;" x-text="metric.score === 100 ? 'check_circle' : 'error'"></span>
+<span class="font-body-md text-body-md" x-text="metric.label"></span>
+</div>
+<span :class="metric.score === 100 ? 'text-on-surface-variant bg-surface-container-low' : 'text-warning-amber bg-tertiary-fixed'" class="font-label-sm text-label-sm px-2 py-1 rounded text-on-surface-variant bg-surface-container-low" x-text="metric.score === 100 ? 'Passed' : 'Requires Attention'"></span>
+</div>
+<div class="w-full bg-surface-container-low h-[6px] rounded-full overflow-hidden">
+<div :class="metric.score === 100 ? 'bg-success-emerald' : 'bg-warning-amber'" :style="`width: ${mounted ? metric.score : 0}%`" class="h-full progress-bar bg-success-emerald"></div>
+</div>
+</div><div>
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-3">
+<span :class="metric.score === 100 ? 'text-success-emerald' : 'text-warning-amber'" class="material-symbols-outlined text-success-emerald" style="font-variation-settings: 'FILL' 1;" x-text="metric.score === 100 ? 'check_circle' : 'error'"></span>
+<span class="font-body-md text-body-md" x-text="metric.label"></span>
+</div>
+<span :class="metric.score === 100 ? 'text-on-surface-variant bg-surface-container-low' : 'text-warning-amber bg-tertiary-fixed'" class="font-label-sm text-label-sm px-2 py-1 rounded text-on-surface-variant bg-surface-container-low" x-text="metric.score === 100 ? 'Passed' : 'Requires Attention'"></span>
+</div>
+<div class="w-full bg-surface-container-low h-[6px] rounded-full overflow-hidden">
+<div :class="metric.score === 100 ? 'bg-success-emerald' : 'bg-warning-amber'" :style="`width: ${mounted ? metric.score : 0}%`" class="h-full progress-bar bg-success-emerald"></div>
+</div>
+</div><div>
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-3">
+<span :class="metric.score === 100 ? 'text-success-emerald' : 'text-warning-amber'" class="material-symbols-outlined text-warning-amber" style="font-variation-settings: 'FILL' 1;" x-text="metric.score === 100 ? 'check_circle' : 'error'"></span>
+<span class="font-body-md text-body-md" x-text="metric.label"></span>
+</div>
+<span :class="metric.score === 100 ? 'text-on-surface-variant bg-surface-container-low' : 'text-warning-amber bg-tertiary-fixed'" class="font-label-sm text-label-sm px-2 py-1 rounded text-warning-amber bg-tertiary-fixed" x-text="metric.score === 100 ? 'Passed' : 'Requires Attention'"></span>
+</div>
+<div class="w-full bg-surface-container-low h-[6px] rounded-full overflow-hidden">
+<div :class="metric.score === 100 ? 'bg-success-emerald' : 'bg-warning-amber'" :style="`width: ${mounted ? metric.score : 0}%`" class="h-full progress-bar bg-warning-amber"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Action Center (5 cols) -->
+<div class="lg:col-span-5 space-y-stack-lg">
+<!-- Optimization Suggestions -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md border border-outline-variant shadow-[0px_4px_20px_rgba(30,41,59,0.05)]">
+<div class="flex items-center justify-between mb-stack-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<h3 class="font-headline-md text-headline-md text-primary">AI Suggestions</h3>
+</div>
+<span class="bg-primary/5 border border-primary/20 text-primary px-2.5 py-1 rounded-full text-[11px] font-semibold flex items-center gap-1 uppercase tracking-wider">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+    Verified by Gemini AI
+</span>
+</div>
+<ul class="space-y-4">
+<template :key="suggestion.title" x-for="suggestion in aiSuggestions">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-on-surface-variant mt-0.5 text-[20px]" x-text="suggestion.icon">edit</span>
+<p class="font-body-md text-body-md text-on-surface"><strong class="font-medium text-primary" x-text="suggestion.title"></strong> <span x-text="suggestion.description"></span></p>
+</li>
+</template><li class="flex gap-3">
+<span class="material-symbols-outlined text-on-surface-variant mt-0.5 text-[20px]" x-text="suggestion.icon"></span>
+<p class="font-body-md text-body-md text-on-surface"><strong class="font-medium text-primary" x-text="suggestion.title"></strong> <span class="" x-text="suggestion.description"></span></p>
+</li><li class="flex gap-3">
+<span class="material-symbols-outlined text-on-surface-variant mt-0.5 text-[20px]" x-text="suggestion.icon"></span>
+<p class="font-body-md text-body-md text-on-surface"><strong class="font-medium text-primary" x-text="suggestion.title"></strong> <span class="" x-text="suggestion.description"></span></p>
+</li><li class="flex gap-3">
+<span class="material-symbols-outlined text-on-surface-variant mt-0.5 text-[20px]" x-text="suggestion.icon"></span>
+<p class="font-body-md text-body-md text-on-surface"><strong class="font-medium text-primary" x-text="suggestion.title"></strong> <span class="" x-text="suggestion.description"></span></p>
+</li>
+</ul>
+<div class="mt-stack-md pt-4 border-t border-outline-variant"><button class="w-full bg-primary text-on-primary px-4 py-3 rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-sm"><span class="material-symbols-outlined text-[20px]">auto_awesome</span><span>Mülakat Hazırlık Rehberi Oluştur</span><span class="bg-tertiary-fixed text-on-tertiary-fixed text-[10px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-tighter ml-1">New</span></button></div></div>
+<!-- AI Cover Letter Draft -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md border border-outline-variant shadow-[0px_4px_20px_rgba(30,41,59,0.05)] flex flex-col h-[500px]">
+<div class="flex items-center justify-between mb-stack-md pb-stack-sm border-b border-outline-variant"><div class="flex items-center gap-2"><h3 class="font-headline-md text-headline-md text-primary">Industry-Tailored Gap Analysis</h3><span class="bg-primary-fixed/50 text-primary-container px-2 py-0.5 rounded text-[11px] font-bold uppercase">Gemini 2.0 Flash</span></div><div class="flex items-center gap-2"><div class="flex items-center gap-2" x-data="{ selectedCulture: 'Corporate' }">
+<div class="flex gap-1 bg-surface-container-low p-1 rounded-lg border border-outline-variant">
+<button :class="selectedCulture === 'Corporate' ? 'bg-surface-container-lowest shadow-sm border-outline-variant' : 'border-transparent hover:bg-surface-container-highest'" @click="selectedCulture = 'Corporate'" class="flex items-center gap-1.5 px-2 py-1 rounded-md border transition-all bg-surface-container-lowest shadow-sm border-outline-variant">
+<span class="text-[14px]">🏛️</span>
+<span class="font-label-sm text-label-sm text-on-surface">Corporate</span>
+</button>
+<button :class="selectedCulture === 'Startup' ? 'bg-surface-container-lowest shadow-sm border-outline-variant' : 'border-transparent hover:bg-surface-container-highest'" @click="selectedCulture = 'Startup'" class="flex items-center gap-1.5 px-2 py-1 rounded-md border transition-all border-transparent hover:bg-surface-container-highest">
+<span class="text-[14px]">🚀</span>
+<span class="font-label-sm text-label-sm text-on-surface">Startup</span>
+</button>
+<button :class="selectedCulture === 'Creative' ? 'bg-surface-container-lowest shadow-sm border-outline-variant' : 'border-transparent hover:bg-surface-container-highest'" @click="selectedCulture = 'Creative'" class="flex items-center gap-1.5 px-2 py-1 rounded-md border transition-all border-transparent hover:bg-surface-container-highest">
+<span class="text-[14px]">🎨</span>
+<span class="font-label-sm text-label-sm text-on-surface">Creative</span>
+</button>
+<button :class="selectedCulture === 'Academic' ? 'bg-surface-container-lowest shadow-sm border-outline-variant' : 'border-transparent hover:bg-surface-container-highest'" @click="selectedCulture = 'Academic'" class="flex items-center gap-1.5 px-2 py-1 rounded-md border transition-all border-transparent hover:bg-surface-container-highest">
+<span class="text-[14px]">🎓</span>
+<span class="font-label-sm text-label-sm text-on-surface">Academic</span>
+</button>
+</div>
+</div><button @click="triggerAction('Copied to clipboard', 'content_copy')" aria-label="Copy to clipboard" class="text-primary hover:bg-surface-container-low p-1.5 rounded transition-colors"><span class="material-symbols-outlined text-[20px]">content_copy</span></button></div></div><p class="text-label-sm text-on-surface-variant mb-4 italic">Skills and feedback optimized for the Fintech sector requirements.</p>
+<div class="flex-1 overflow-y-auto pr-2 custom-scrollbar font-body-md text-body-md text-on-surface-variant space-y-4 relative">
+<!-- Loading Overlay -->
+<div class="absolute inset-0 bg-surface-container-lowest/80 flex items-center justify-center z-10" style="display: none;" x-show="generatingDraft" x-transition="">
+<span class="material-symbols-outlined text-primary text-4xl spin">sync</span>
+</div>
+<div x-html="currentDraftHtml"></div>
+</div>
+<div class="mt-stack-md pt-stack-sm border-t border-outline-variant"><div class="mb-4"><p class="font-label-md text-label-md text-on-surface-variant mb-3 uppercase tracking-wider">Export Format</p><div class="grid grid-cols-2 gap-3" x-data="{ format: 'pdf' }"><button :class="format === 'pdf' ? 'border-primary bg-primary/5' : 'border-outline-variant hover:bg-surface-container-low'" @click="format = 'pdf'" class="flex flex-col items-center gap-2 p-3 border rounded-xl transition-all py-2 border-primary bg-primary/5"><span class="material-symbols-outlined text-primary">picture_as_pdf</span><span class="font-label-md text-label-md">PDF Document</span></button><button :class="format === 'docx' ? 'border-primary bg-primary/5' : 'border-outline-variant hover:bg-surface-container-low'" @click="format = 'docx'" class="flex flex-col items-center gap-2 p-3 border rounded-xl transition-all py-2 border-outline-variant hover:bg-surface-container-low"><span class="material-symbols-outlined text-primary">description</span><span class="font-label-md text-label-md">Word (DOCX)</span></button></div></div>
+<button :disabled="generatingDraft" @click="regenerateDraft()" class="w-full bg-primary text-on-primary px-4 rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed py-2"><span :class="generatingDraft ? 'spin' : ''" class="material-symbols-outlined text-[18px]" x-text="generatingDraft ? 'sync' : 'auto_awesome'"></span><span class="" x-text="generatingDraft ? 'Generating Draft...' : 'Regenerate with Gemini 2.0 Flash (Selected Tone)'"></span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('analysisApp', () => ({
+                applicationId: 'app_12345',
+                initialLoading: true,
+                score: 0,
+                scoreMessage: '',
+                criticalSkills: [],
+                recommendedSkills: [],
+                matchedSkills: [],
+                atsMetrics: [],
+                aiSuggestions: [],
+                
+                drafts: [
+                    `<p>Dear Hiring Manager,</p>
+                    <p>I am writing to express my strong interest in the Senior Frontend Engineer position at Google. With over 6 years of experience building highly performant web applications using React and TypeScript, I am drawn to your team's commitment to pushing the boundaries of web architecture.</p>
+                    <p>In my recent role, I led a team that completely overhauled our core product's frontend, migrating to a modern stack that resulted in a 40% reduction in initial load times. I notice this role emphasizes deep expertise in scalable architecture, an area where I have consistently delivered quantifiable results.</p>
+                    <p>I am particularly excited about the opportunity to contribute to [Specific Google Project/Initiative] and bring my background in complex state management to the team.</p>
+                    <p>Thank you for your time and consideration.</p>
+                    <p>Best regards,<br/>[Your Name]</p>`,
+                    
+                    `<p>Dear Hiring Team,</p>
+                    <p>When I saw the opening for a Senior Frontend Engineer at Google, I knew I had to apply. My background aligns perfectly with your focus on high-performance user interfaces and scalable systems.</p>
+                    <p>Throughout my career, I've championed performance optimization and modern architectural patterns. At my previous company, my efforts led to a significant increase in user engagement due to improved load speeds and smoother interactions, directly impacting the bottom line.</p>
+                    <p>I thrive in collaborative environments where pushing technical boundaries is the norm, making Google an ideal environment for my next career step.</p>
+                    <p>Looking forward to discussing how my skills align with your needs.</p>
+                    <p>Sincerely,<br/>[Your Name]</p>`
+                ],
+                currentDraftHtml: '',
+                draftIndex: 0,
+                generatingDraft: false,
+                isEditing: false,
+                isApplying: false,
+                
+                toasts: [],
+                toastIdSeq: 0,
+
+                async init() {
+                    this.currentDraftHtml = this.drafts[0];
+                    await this.fetchAnalysisData();
+                },
+
+                async fetchAnalysisData() {
+                    try {
+                        // Simulate API call for fetching analysis data based on application ID
+                        const response = await fetch(`/api/analysis?id=${this.applicationId}`);
+                        if (response.ok) {
+                            const data = await response.json();
+                            this.score = data.score;
+                            this.scoreMessage = data.scoreMessage;
+                            this.criticalSkills = data.criticalSkills;
+                            this.recommendedSkills = data.recommendedSkills;
+                            this.matchedSkills = data.matchedSkills;
+                            this.atsMetrics = data.atsMetrics;
+                            this.aiSuggestions = data.aiSuggestions;
+                        } else {
+                            throw new Error('API failed, falling back to mock data');
+                        }
+                    } catch (error) {
+                        console.warn(error.message);
+                        // Fallback structured mock data aligned with technical report
+                        this.score = 84;
+                        this.scoreMessage = 'Strong candidate. Your React and TypeScript experience aligns well, but you need more emphasis on modern framework architectures.';
+                        this.criticalSkills = [
+                            { name: 'Next.js App Router' },
+                            { name: 'Micro-frontends' }
+                        ];
+                        this.recommendedSkills = [
+                            { name: 'TailwindCSS' },
+                            { name: 'WebSockets' }
+                        ];
+                        this.matchedSkills = ['React', 'TypeScript', 'GraphQL', 'Performance Optimization'];
+                        this.atsMetrics = [
+                            { label: 'Standard Formatting', score: 100 },
+                            { label: 'Contact Information', score: 100 },
+                            { label: 'Keyword Density', score: 60 }
+                        ];
+                        this.aiSuggestions = [
+                            { icon: 'edit', title: 'Quantify Impact:', description: 'Add specific metrics to your previous role at TechCorp (e.g., "Improved load time by X%").' },
+                            { icon: 'rebase_edit', title: 'Rephrase Experience:', description: 'Change "Worked with React" to "Architected scalable frontend solutions using React."' },
+                            { icon: 'add_circle', title: 'Highlight Next.js:', description: 'Emphasize your personal project using Next.js App Router to cover the critical missing skill.' }
+                        ];
+                    } finally {
+                        this.initialLoading = false;
+                    }
+                },
+
+                triggerAction(message, icon = 'info') {
+                    const id = ++this.toastIdSeq;
+                    this.toasts.push({ id, message, icon });
+                    setTimeout(() => {
+                        this.toasts = this.toasts.filter(t => t.id !== id);
+                    }, 3000);
+                },
+
+                handleEditCV() {
+                    this.isEditing = true;
+                    setTimeout(() => {
+                        this.isEditing = false;
+                        this.triggerAction('Edit CV opened', 'edit');
+                    }, 1000);
+                },
+
+                handleApplyNow() {
+                    this.isApplying = true;
+                    setTimeout(() => {
+                        this.isApplying = false;
+                        this.triggerAction('Application Started', 'send');
+                    }, 1500);
+                },
+
+                async regenerateDraft() {
+                    if(this.generatingDraft) return;
+                    this.generatingDraft = true;
+                    
+                    try {
+                        // Simulate POST to Gemini API Endpoint
+                        const response = await fetch('/api/generate-cover-letter', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ 
+                                applicationId: this.applicationId,
+                                model: 'gemini-2.0-flash'
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            this.currentDraftHtml = data.html;
+                        } else {
+                            throw new Error('API failed, using fallback');
+                        }
+                    } catch (error) {
+                        console.warn(error.message);
+                        // Fallback logic
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        this.draftIndex = (this.draftIndex + 1) % this.drafts.length;
+                        this.currentDraftHtml = this.drafts[this.draftIndex];
+                    } finally {
+                        this.generatingDraft = false;
+                        this.triggerAction('Draft generated by Gemini', 'auto_awesome');
+                    }
+                }
+            }))
+        })
+    </script>
+</body></html>
