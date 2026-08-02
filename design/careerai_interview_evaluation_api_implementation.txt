@@ -1,0 +1,68 @@
+// routes/api.js - Added Interview Evaluation Endpoint
+
+const express = require('express');
+const router = express.Router();
+const { GoogleGenAI } = require('@google/genai');
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+/**
+ * POST: /api/evaluate-interview
+ * Analyzes the interview chat history and provides a structured performance report.
+ */
+router.post('/evaluate-interview', async (req, res) => {
+    try {
+        const { chatHistory, jobRole, targetKeywords } = req.body;
+
+        if (!chatHistory || !Array.isArray(chatHistory) || chatHistory.length === 0) {
+            return res.status(400).json({ message: 'Değerlendirme için sohbet geçmişi (chatHistory) gereklidir.' });
+        }
+
+        const prompt = `
+            Sen uzman bir İnsan Kaynakları Direktörüsün.
+            Adayın başvurduğu pozisyon: ${jobRole || 'Belirtilmedi'}
+            Şirketin aradığı temel değerler: ${(targetKeywords || []).join(', ') || 'Genel Profesyonellik'}
+            
+            Aşağıda mülakatçı (ai) ve aday (user) arasında geçen mülakat simülasyonunun dökümü bulunmaktadır:
+            ${JSON.stringify(chatHistory, null, 2)}
+            
+            GÖREV:
+            Adayın performansını detaylı analiz et ve aşağıdaki JSON formatında (kesinlikle başka metin olmadan) bir değerlendirme raporu oluştur.
+            {
+              "overallScore": (0-100 arası sayı),
+              "metrics": {
+                "starMethod": (0-100 arası sayı, STAR metodunun kullanım başarısı),
+                "communication": (0-100 arası sayı, iletişim becerisi ve profesyonellik),
+                "cultureFit": (0-100 arası sayı, aranan temel değerlere uyum)
+              },
+              "summary": "Mülakatın genel özetini ve adayın bıraktığı intibayı anlatan 2-3 cümlelik profesyonel bir paragraf.",
+              "strengths": ["Belirgin Güçlü Yön 1", "Belirgin Güçlü Yön 2"],
+              "improvements": ["Geliştirilmesi Gereken Alan 1", "Geliştirilmesi Gereken Alan 2"],
+              "actionPlan": ["Bir sonraki mülakata kadar yapılması gereken taktiksel adım 1", "Taktiksel adım 2"]
+            }
+        `;
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            generationConfig: {
+                responseMimeType: "application/json",
+            }
+        });
+
+        // Parse and return the structured evaluation data
+        const textResponse = response.text.replace(/`{3}json/g, '').replace(/`{3}/g, '').trim();
+        const evaluationData = JSON.parse(textResponse);
+
+        res.json({
+            success: true,
+            data: evaluationData
+        });
+
+    } catch (error) {
+        console.error("Mülakat değerlendirme hatası:", error);
+        res.status(500).json({ message: 'Değerlendirme raporu oluşturulamadı.', error: error.message });
+    }
+});
+
+module.exports = router;

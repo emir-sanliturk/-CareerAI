@@ -1,0 +1,14 @@
+{
+  "name": "careerai",
+  "version": "1.0.0",
+  "description": "CareerAI - Yapay Zeka Destekli Mülakat Simülatörü ve Kariyer Koçu",
+  "private": true,
+  "scripts": {
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "install:all": "cd client && npm install && cd ../server && npm install",
+    "build": "cd client && npm run build"
+  },
+  "keywords": ["career", "ai", "interview", "simulation", "gemini"],
+  "license": "MIT"
+}
