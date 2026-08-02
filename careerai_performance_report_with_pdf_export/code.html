@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="light" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mülakat Performans Karnesi - CareerAI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#006c49",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#201100",
+                        "secondary-fixed-dim": "#4edea3",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f7f9fb",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "outline-variant": "#c5c6cd",
+                        "primary-fixed": "#d8e3fb",
+                        "on-secondary-fixed-variant": "#005236",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#45474c",
+                        "on-secondary": "#ffffff",
+                        "background": "#f7f9fb",
+                        "primary": "#091426",
+                        "on-primary-fixed": "#111c2d",
+                        "on-secondary-container": "#00714d",
+                        "on-background": "#191c1e",
+                        "surface-variant": "#e0e3e5",
+                        "surface-container-high": "#e6e8ea",
+                        "inverse-primary": "#bcc7de",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-fixed": "#ffddb8",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-tint": "#545f73",
+                        "primary-fixed-dim": "#bcc7de",
+                        "tertiary-container": "#3c2300",
+                        "on-surface": "#191c1e",
+                        "on-primary-fixed-variant": "#3c475a",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-primary-container": "#8590a6",
+                        "surface-dim": "#d8dadc",
+                        "on-secondary-fixed": "#002113",
+                        "outline": "#75777d",
+                        "on-tertiary-container": "#c88000",
+                        "surface-container": "#eceef0",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#6cf8bb",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#2a1700",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "secondary-fixed": "#6ffbbe",
+                        "inverse-surface": "#2d3133",
+                        "primary-container": "#1e293b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "margin-desktop": "40px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.25", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .gauge-svg {
+            transform: rotate(-90deg);
+        }
+        .gauge-track {
+            fill: none;
+            stroke: #F1F5F9;
+            stroke-width: 12;
+        }
+        .gauge-fill {
+            fill: none;
+            stroke: #10B981; /* Success Emerald */
+            stroke-width: 12;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 42; /* Adjust for 85% score */
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+        .shadow-level-1 {
+            box-shadow: 0px 4px 20px rgba(30, 41, 59, 0.05);
+        }
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+<!-- Vue.js for reactivity -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<!-- Load html2pdf dynamically in the Vue component, but we can also preload it -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased flex" id="app">
+<!-- SideNavBar Shell -->
+<nav class="hidden md:flex fixed left-0 top-0 h-full w-64 flex-col py-stack-lg px-stack-md z-40 border-r border-outline-variant bg-surface">
+<div class="mb-stack-lg flex items-center gap-2">
+<span class="material-symbols-outlined font-headline-md text-headline-md font-bold text-primary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">CareerAI</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Pro Edition</p>
+</div>
+</div>
+<ul class="flex flex-col gap-unit flex-1">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">description</span>
+                    Applications
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+                    My Skills
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg font-label-md text-label-md bg-primary-container text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined">psychology</span>
+                    AI Tools
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+</li>
+</ul>
+<div class="mt-auto flex flex-col gap-stack-md">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-2 rounded-lg hover:opacity-90 transition-opacity">Upgrade to Pro</button>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+                Help Center
+            </a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop max-w-[1440px] mx-auto min-h-screen flex flex-col">
+<!-- Header Actions -->
+<header class="flex justify-between items-center mb-stack-lg html2pdf__page-break-avoid">
+<h2 class="font-headline-lg text-headline-lg text-primary">Mülakat Performans Karnesi</h2>
+<div class="flex gap-stack-sm">
+<button :disabled="isDownloading" @click="downloadPDF" class="flex items-center gap-2 px-4 py-2 border border-primary text-primary font-label-md text-label-md rounded-lg hover:bg-surface-container-low transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+<span class="material-symbols-outlined text-[18px] spinner" v-if="isDownloading">progress_activity</span>
+<span class="material-symbols-outlined text-[18px]" v-else="">download</span>
+                    {{ isDownloading ? 'Downloading...' : 'Download Report (PDF)' }}
+                </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary font-label-md text-label-md rounded-lg hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                    Start New Simulation
+                </button>
+</div>
+</header>
+<!-- Report Container to be converted to PDF -->
+<div class="flex flex-col gap-stack-lg" ref="reportContainer">
+<!-- Top Section: Summary & Score -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Executive Summary -->
+<div class="lg:col-span-2 bg-surface-container-lowest p-stack-md rounded-xl shadow-level-1 border border-outline-variant/30 flex flex-col justify-center">
+<h3 class="font-headline-md text-headline-md mb-stack-sm text-primary">Executive Summary</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                        Genel olarak teknik yetkinliklerinizi güçlü bir şekilde ifade ettiniz. Proje deneyimlerinizi aktarırken detaylara hakimiyetiniz dikkat çekiciydi. Ancak, davranışsal sorularda durum-görev-eylem-sonuç (STAR) yapısını daha net kurmanız, iletişiminizin etkisini artıracaktır. Kurum kültürü uyumunuz olumlu değerlendirilmiştir.
+                    </p>
+</div>
+<!-- Overall Score Gauge -->
+<div class="bg-surface-container-lowest p-stack-md rounded-xl shadow-level-1 border border-outline-variant/30 flex flex-col items-center justify-center">
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-4 uppercase tracking-wider">Overall Score</h3>
+<div class="relative w-32 h-32">
+<svg class="gauge-svg w-full h-full" viewbox="0 0 100 100">
+<circle class="gauge-track" cx="50" cy="50" r="45"></circle>
+<circle class="gauge-fill" cx="50" cy="50" r="45"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-lg text-headline-lg text-primary">85</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/100</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Detailed Metrics -->
+<section class="bg-surface-container-lowest p-stack-md rounded-xl shadow-level-1 border border-outline-variant/30">
+<h3 class="font-headline-md text-headline-md mb-stack-md text-primary">Performans Metrikleri</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Metric 1 -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<span class="font-label-md text-label-md text-on-surface">STAR Method Alignment</span>
+<span class="font-label-md text-label-md text-primary">70%</span>
+</div>
+<div class="w-full bg-primary/10 h-[6px] rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 70%"></div>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<span class="font-label-md text-label-md text-on-surface">Communication &amp; Diction</span>
+<span class="font-label-md text-label-md text-primary">92%</span>
+</div>
+<div class="w-full bg-primary/10 h-[6px] rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 92%"></div>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<span class="font-label-md text-label-md text-on-surface">Culture Fit</span>
+<span class="font-label-md text-label-md text-primary">88%</span>
+</div>
+<div class="w-full bg-primary/10 h-[6px] rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 88%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Strengths & Areas for Improvement (Side-by-side) -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter html2pdf__page-break-avoid">
+<!-- Strengths -->
+<div class="border border-outline-variant/50 rounded-xl p-stack-md bg-white">
+<div class="flex items-center gap-2 mb-stack-sm text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<h3 class="font-headline-md text-[20px] font-semibold">Strengths</h3>
+</div>
+<ul class="space-y-3">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-[16px] mt-1">arrow_right</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Teknik terimlerin doğru ve yerinde kullanımı.</p>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-[16px] mt-1">arrow_right</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Özgüvenli ve akıcı beden dili / ses tonu.</p>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-[16px] mt-1">arrow_right</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Karmaşık problemleri basitleştirerek açıklama yeteneği.</p>
+</li>
+</ul>
+</div>
+<!-- Areas for Improvement -->
+<div class="border border-outline-variant/50 rounded-xl p-stack-md bg-white">
+<div class="flex items-center gap-2 mb-stack-sm text-[#ea580c]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">warning</span>
+<h3 class="font-headline-md text-[20px] font-semibold">Areas for Improvement</h3>
+</div>
+<ul class="space-y-3">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[#ea580c] text-[16px] mt-1">arrow_right</span>
+<p class="font-body-md text-body-md text-on-surface-variant">"Zor bir çalışma arkadaşıyla nasıl başa çıktınız?" sorusunda somut sonuç eksikliği.</p>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[#ea580c] text-[16px] mt-1">arrow_right</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Yanıt sürelerinin yer yer 3 dakikayı aşması (daha özet yanıtlar verilmeli).</p>
+</li>
+</ul>
+</div>
+</section>
+<!-- Tactical Action Plan -->
+<section class="bg-surface-container-lowest p-stack-md rounded-xl shadow-level-1 border border-outline-variant/30 html2pdf__page-break-avoid">
+<div class="flex items-center gap-2 mb-stack-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">format_list_numbered</span>
+<h3 class="font-headline-md text-headline-md text-primary">Tactical Action Plan</h3>
+</div>
+<div class="space-y-4">
+<div class="flex gap-4 items-start p-4 border border-outline-variant/30 rounded-lg bg-surface-bright">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-md font-bold shrink-0">1</div>
+<div>
+<h4 class="font-label-md text-label-md text-primary mb-1">STAR Metodu Pratiği</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Geçmiş deneyimlerinizi anlatırken Situation (Durum), Task (Görev), Action (Eylem) ve Result (Sonuç) çerçevesini kağıda dökerek çalışın.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start p-4 border border-outline-variant/30 rounded-lg bg-surface-bright">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-md font-bold shrink-0">2</div>
+<div>
+<h4 class="font-label-md text-label-md text-primary mb-1">Zaman Yönetimi</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Mülakat yanıtlarınızı kronometre ile ölçün. İdeal bir davranışsal soru yanıtı 90-120 saniye arasında olmalıdır.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start p-4 border border-outline-variant/30 rounded-lg bg-surface-bright">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-md font-bold shrink-0">3</div>
+<div>
+<h4 class="font-label-md text-label-md text-primary mb-1">Somut Metrikler Ekleyin</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Başarılarınızı anlatırken yüzdeler, bütçe rakamları veya zaman tasarrufu gibi ölçülebilir veriler kullanmaya özen gösterin.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                const reportContainer = ref(null);
+                const isDownloading = ref(false);
+
+                const downloadPDF = async () => {
+                    if (isDownloading.value) return;
+                    
+                    isDownloading.value = true;
+                    
+                    try {
+                        const element = reportContainer.value;
+                        const opt = {
+                            margin: 10,
+                            filename: 'Mulakat_Performans_Karnesi.pdf',
+                            image: { type: 'jpeg', quality: 0.98 },
+                            html2canvas: { scale: 2, useCORS: true },
+                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                        };
+
+                        await html2pdf().set(opt).from(element).save();
+                    } catch (error) {
+                        console.error('Error generating PDF:', error);
+                        alert('PDF oluşturulurken bir hata oluştu.');
+                    } finally {
+                        isDownloading.value = false;
+                    }
+                };
+
+                return {
+                    reportContainer,
+                    isDownloading,
+                    downloadPDF
+                };
+            }
+        }).mount('#app');
+    </script>
+</body></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerAI — Tasarım Önizleme</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, sans-serif;
+      background: #f7f9fb;
+      color: #191c1e;
+      min-height: 100vh;
+      padding: 48px 24px;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    h1 {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    p.sub { color: #45474c; margin-bottom: 32px; line-height: 1.6; }
+    .cards { display: flex; flex-direction: column; gap: 12px; }
+    a.card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      background: #fff;
+      border: 1px solid #e0e3e5;
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.15s;
+    }
+    a.card:hover { box-shadow: 0 4px 20px rgba(30,41,59,0.08); }
+    .icon {
+      width: 44px; height: 44px;
+      background: #091426;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 20px; flex-shrink: 0;
+    }
+    .card-title { font-weight: 600; font-size: 16px; }
+    .card-desc { font-size: 13px; color: #75777d; margin-top: 2px; }
+    .arrow { margin-left: auto; color: #75777d; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CareerAI</h1>
+    <p class="sub">Stitch AI tasarım çıktıları — ekranları aşağıdan önizleyebilirsiniz.</p>
+    <div class="cards">
+      <a class="card" href="careerai_live_interview_simulation_interface/code.html">
+        <div class="icon">🎙️</div>
+        <div>
+          <div class="card-title">Canlı Mülakat Simülasyonu</div>
+          <div class="card-desc">Gerçek zamanlı sohbet tabanlı mülakat arayüzü</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="careerai_interview_performance_report/code.html">
+        <div class="icon">📊</div>
+        <div>
+          <div class="card-title">Mülakat Performans Raporu</div>
+          <div class="card-desc">STAR, iletişim ve kültürel uyum skorları</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="careerai_performance_report_with_pdf_export/code.html">
+        <div class="icon">📄</div>
+        <div>
+          <div class="card-title">PDF Dışa Aktarma Raporu</div>
+          <div class="card-desc">Profesyonel PDF indirme özellikli rapor</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="careerai_interview_performance_report/careerai_insights_detail_with_interview_cta/code.html">
+        <div class="icon">🎯</div>
+        <div>
+          <div class="card-title">İçgörü Detayı + Mülakat CTA</div>
+          <div class="card-desc">Stratejik hazırlık ve mülakat başlatma ekranı</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
