@@ -1,6 +1,6 @@
 const API_BASE = '/api'
 
-export const api = {
+export const interviewService = {
   async startInterview({ position, experienceLevel, cvText, jobPosting }) {
     try {
       const response = await fetch(`${API_BASE}/interview/start`, {
